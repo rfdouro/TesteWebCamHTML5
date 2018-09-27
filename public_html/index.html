@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+https://www.kirupa.com/html5/accessing_your_webcam_in_html5.htm
+-->
+<html>
+ <head>
+  <meta charset="utf-8">
+  <meta content="stuff, to, help, search, engines, not" name="keywords">
+  <meta content="What this page is about." name="description">
+  <meta content="Display Webcam Stream" name="title">
+  <title>Display Webcam Stream</title>
+
+  <style>
+   #container {
+    margin: 0px auto;
+    width: 500px;
+    height: 375px;
+    border: 10px #333 solid;
+   }
+   #videoElement {
+    width: 500px;
+    height: 375px;
+    background-color: #666;
+   }
+  </style>
+ </head>
+
+ <body>
+  <button id="play">Play</button>
+  <button id="pause">Pause</button>
+  <button id="stop">Stop</button>
+  <br />
+  <div id="container">
+   <video autoplay="true" id="videoElement">
+
+   </video>
+  </div>
+  <script>
+   var play = document.getElementById("play");
+   var pause = document.getElementById("pause");
+   var stop = document.getElementById("stop");
+   var constraints = {audio: true, video: true};
+
+   function disableButtons(disPlay, disPause, disStop) {
+    play.disabled = disPlay;
+    pause.disabled = disPause;
+    stop.disabled = disStop;
+   }
+
+   var video = document.querySelector("#videoElement");
+
+   var initVideoPlay = function () {
+    if (navigator.mediaDevices.getUserMedia) {
+     navigator.mediaDevices.getUserMedia(constraints)
+             .then(function (stream) {
+              video.srcObject = stream;
+             })
+             .catch(function (err0r) {
+              console.log("Something went wrong!");
+             });
+    }
+   };
+   
+   initVideoPlay();
+   disableButtons(true, false, false);
+
+   play.addEventListener("click", function () {
+    disableButtons(true, false, false);
+    initVideoPlay();
+    video.play();
+   }, false);
+
+   pause.addEventListener("click", function () {
+    disableButtons(false, true, false);
+    video.pause();
+   }, false);
+
+   stop.addEventListener("click", function () {
+    disableButtons(false, true, true);
+    video.pause();
+    video.srcObject = null;
+   }, false);
+  </script>
+ </body>
+</html>
